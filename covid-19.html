@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Covid 19</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form name="myForm" action="#" onsubmit="checkCovid(event)" method="POST" id="newForm">
+        <input type="text" name="country" id="country"  placeholder="country">
+        <input type="date" name="dateFirst" id="dateFirst">
+        <input type="date" name="dateTwo" id="dateTwo">
+        <input type="submit" value="submit">
+    </form>
+    <div id="covid">
+        
+    </div>
+    <script>
+        async function checkCovid(event){
+    
+            event.preventDefault();
+
+            var country=document.getElementById("country").value;
+            var dateOne=document.getElementById("dateFirst").value;
+            var dateTwo=document.getElementById("dateTwo").value;
+    
+            let covidUpdate=await fetch(`https://api.covid19api.com/country/${country}?from=${dateOne}T00:00:00Z&to=${dateTwo}T00:00:00Z`)
+    
+            let covidData=await covidUpdate.json();
+            let len=covidData.length;
+            console.log(len);
+            for(var i=0;i<len;i++){
+
+            var confirmed=document.createElement('p');
+            var active=document.createElement('p');
+            var death=document.createElement('p');
+
+            var x=document.createTextNode("Confirmed cases : " +covidData[i].Confirmed);
+            var z=document.createTextNode(" Death Cases : "+covidData[i].Deaths);
+            var y=document.createTextNode("Active Cases : "+ covidData[i].Active);
+
+            confirmed.appendChild(x);
+            active.appendChild(y);
+            death.appendChild(z);
+
+            var divNew=document.createElement('div');
+
+            divNew.appendChild(confirmed);
+            divNew.appendChild(active);
+            divNew.appendChild(death);
+            divNew.className="covidData";
+            var allDiv=document.getElementById("covid");
+            allDiv.appendChild(divNew);
+          
+            }
+        
+        }
+    </script>
+</body>
+</html>
